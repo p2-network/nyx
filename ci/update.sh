@@ -4,8 +4,19 @@ set -euo pipefail
 
 echo "Updating the CI environment..."
 
-# For each directory in projects, run the update script
-for dir in projects/*; do
+# get director of current script
+
+BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+echo "$BASE_DIR is the current directory"
+cd $BASE_DIR/..
+
+PROJECTS_DIR=$( realpath "$BASE_DIR"/../projects )
+
+echo "PROJECTS_DIR is $PROJECTS_DIR"
+
+# Update all projects
+for dir in $PROJECTS_DIR/*; do
   if [ -d "$dir" ]; then
     echo "Updating $dir..."
     # if a file called before.sh exists in the directory, run it

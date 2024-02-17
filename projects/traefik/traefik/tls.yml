@@ -1,0 +1,7 @@
+tls:
+  stores:
+    default:
+      defaultGeneratedCert:
+        resolver: "route53"
+        domain:
+          main: "*.nyx.thepatrick.cloud"

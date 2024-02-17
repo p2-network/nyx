@@ -20,3 +20,6 @@ echo "aws_secret_access_key=${DOCKER_TRAEFIK_AWS_SHARED_CREDENTIALS_FILE_AWS_SEC
 # traefik
 doppler secrets get DOCKER_TRAEFIK_CF_DNS_API_TOKEN --token "${DOPPLER_TOKEN}" --plain > /opt/p2-network/run/DOCKER_TRAEFIK_CF_DNS_API_TOKEN
 doppler secrets get DOCKER_TRAEFIK_ACME_EMAIL  --token "${DOPPLER_TOKEN}" --plain > /opt/p2-network/run/DOCKER_TRAEFIK_ACME_EMAIL
+
+# if /opt/p2-network/traefik-acme/ does not exist, create it
+[ -d /opt/p2-network/traefik-acme ] || mkdir /opt/p2-network/traefik-acme
