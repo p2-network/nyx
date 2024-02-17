@@ -22,6 +22,6 @@ for dir in $PROJECTS_DIR/*; do
     # if a file called before.sh exists in the directory, run it
     [ -f "$dir/before.sh" ] && (cd "$dir" && ./before.sh)
     # if a docker-compose.yml file exists, run docker-compose up -d
-    [ -f "$dir/docker-compose.yml" ] && (cd "$dir" && docker-compose up -d)
+    [ -f "$dir/docker-compose.yml" ] && (cd "$dir" && docker compose up -d)
   fi
 done
