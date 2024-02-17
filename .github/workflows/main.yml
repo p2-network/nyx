@@ -39,4 +39,4 @@ jobs:
       - name: Remote Deployment
         shell: bash
         run: |
-          ssh nyx.tuatara-puffin.ts.net "cd /opt/gitops/nyx && git pull"
+          ssh patrick@nyx.tuatara-puffin.ts.net "cd /opt/gitops/nyx && git pull"
