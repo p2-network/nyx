@@ -2,10 +2,6 @@ name: deploy-project
 
 on:
   push:
-    paths:
-      - 'ci/**'
-      - 'project/**'
-      - '.github/**'
     branches: [main]
   workflow_dispatch:
 
