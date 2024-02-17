@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: nyx
     if: github.event_name != 'pull_request'
     steps:
       - name: checkout
@@ -31,7 +32,7 @@ jobs:
       - name: Adding known host
         shell: bash
         run: |
-          ssh-keyscan -p 22 "nyx.tuatara-puffin.ts.net" >> ~/.ssh/known_hosts
+          ssh-keyscan -p 22 "${{ vars.TARGET_HOSTNAME }}" >> ~/.ssh/known_hosts
 
       # TODO: something like:
       # ssh patrick@nyx.tuatara-puffin.ts.net "if [ ! -d /opt/gitops/nyx ]; then mkdir /opt/gitops && git clone https://github.com/p2-network/nyx /opt/gitops/nyx; fi"
@@ -40,4 +41,4 @@ jobs:
       - name: Remote Deployment
         shell: bash
         run: |
-          ssh patrick@nyx.tuatara-puffin.ts.net "cd /opt/gitops/nyx && git pull && ci/update.sh"
+          ssh ${{ vars.TARGET_USER }}@${{ vars.TARGET_HOSTNAME }} "cd /opt/gitops/nyx && git pull && ci/update.sh"

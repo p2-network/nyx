@@ -20,10 +20,12 @@ for dir in $PROJECTS_DIR/*; do
 
     echo "::group::Updating $dir..."
 
-    # if a file called before.sh exists in the directory, run it
-    [ -f "$dir/before.sh" ] && (cd "$dir" && ./before.sh)
-    # if a docker-compose.yml file exists, run docker-compose up -d
-    [ -f "$dir/docker-compose.yml" ] && (cd "$dir" && docker compose up -d)
+    pushd $dir
+
+    [ -f "$dir/before.sh" ] && (./before.sh)
+    [ -f "$dir/docker-compose.yml" ] && (docker compose up -d)
+
+    popd
 
     echo "::endgroup::"
 
