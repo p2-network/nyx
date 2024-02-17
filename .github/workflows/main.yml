@@ -1,0 +1,43 @@
+name: deploy-project
+
+on:
+  push:
+    paths:
+      - 'project/**'
+      - '.github/**'
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TAILSCALE_CI_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TAILSCALE_CI_CLIENT_SECRET }}
+          tags: tag:ci
+
+      - name: starting SSH agent
+        shell: bash
+        run: |
+            mkdir -p ~/.ssh
+            eval $(ssh-agent)
+
+      - name: Adding known host
+        shell: bash
+        run: |
+          ssh-keyscan -p 22 "nyx.tuatara-puffin.ts.net" >> ~/.ssh/known_hosts
+          ssh-keyscan -p 22 "nyx.tuatara-puffin.ts.net" >> /etc/ssh/ssh_known_hosts
+      
+      - name: Remote Deployment
+        shell: bash
+        run: |
+          ssh nyx.tuatara-puffin.ts.net "cd /opt/gitops/nyx && git pull"
