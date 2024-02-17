@@ -13,7 +13,6 @@ services:
       - "traefik.http.routers.api-tailscale.tls=true"
       - "traefik.http.routers.api-tailscale.tls.certresolver=route53"
       - "traefik.http.routers.api-tailscale.tls.domains[0].main=*.nyx.thepatrick.cloud"
-      - "traefik.http.routers.api-tailscale.middlewares=oauth2-proxy-redirect@docker"
     command:
       #- "--log.level=DEBUG"
       - "--api"
