@@ -3,6 +3,7 @@ name: deploy-project
 on:
   push:
     paths:
+      - 'ci/**'
       - 'project/**'
       - '.github/**'
     branches: [main]
@@ -35,8 +36,12 @@ jobs:
         shell: bash
         run: |
           ssh-keyscan -p 22 "nyx.tuatara-puffin.ts.net" >> ~/.ssh/known_hosts
+
+      # TODO: something like:
+      # ssh patrick@nyx.tuatara-puffin.ts.net "if [ ! -d /opt/gitops/nyx ]; then mkdir /opt/gitops && git clone https://github.com/p2-network/nyx /opt/gitops/nyx; fi"
+      # but... permissions.
       
       - name: Remote Deployment
         shell: bash
         run: |
-          ssh patrick@nyx.tuatara-puffin.ts.net "cd /opt/gitops/nyx && git pull"
+          ssh patrick@nyx.tuatara-puffin.ts.net "cd /opt/gitops/nyx && git pull && ci/update.sh"
