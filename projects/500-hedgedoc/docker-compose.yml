@@ -17,7 +17,7 @@ services:
       - hedgedoc.env
     environment:
       - TZ=Australia/Melbourne
-      - CMD_DOMAIN=hedgedoc.nyx.thepatrick.cloud
+      - CMD_DOMAIN=docs.nyx.thepatrick.cloud
       - CMD_URL_ADDPORT=false
       - CMD_PROTOCOL_USESSL=true
       - CMD_PORT=3000
