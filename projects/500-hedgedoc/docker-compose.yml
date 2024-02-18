@@ -14,7 +14,7 @@ services:
     # the offical image is not multi-arch, so we use the linuxserver image
     image: linuxserver/hedgedoc:1.9.9
     env_file:
-      - app.env
+      - hedgedoc.env
     environment:
       - CMD_DOMAIN=localhost
       - CMD_URL_ADDPORT=true
