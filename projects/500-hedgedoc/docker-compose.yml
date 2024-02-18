@@ -1,0 +1,44 @@
+version: '3'
+
+name: hedgedoc
+
+services:
+  database:
+    image: postgres:16.2-alpine
+    env_file:
+      - database.env
+    volumes:
+      - database:/var/lib/postgresql/data
+    restart: unless-stopped
+  app:
+    # the offical image is not multi-arch, so we use the linuxserver image
+    image: linuxserver/hedgedoc:1.9.9
+    env_file:
+      - app.env
+    environment:
+      - CMD_DOMAIN=localhost
+      - CMD_URL_ADDPORT=true
+    volumes:
+      - uploads:/hedgedoc/public/uploads
+    restart: unless-stopped
+    depends_on:
+      - database
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.hedgedoc.rule=Host(`docs.nyx.thepatrick.cloud`) && ClientIP(`100.0.0.0/8`, `fd7a:115c:a1e0:ab12::/64`)'
+      - 'traefik.http.routers.hedgedoc.entrypoints=websecure'
+      - 'traefik.http.routers.hedgedoc.tls=true'
+      - 'traefik.http.routers.hedgedoc.tls.certresolver=route53'
+      - 'traefik.http.routers.hedgedoc.tls.domains[0].main=*.nyx.thepatrick.cloud'
+    networks:
+      default:
+      traefik:
+
+volumes:
+  database:
+  uploads:
+
+networks:
+  traefik:
+    name: traefik_default
+    external: true
