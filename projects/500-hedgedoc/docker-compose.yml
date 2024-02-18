@@ -25,7 +25,7 @@ services:
       - database
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.hedgedoc.rule=Host(`docs.nyx.thepatrick.cloud`) && ClientIP(`100.0.0.0/8`, `fd7a:115c:a1e0:ab12::/64`)'
+      - 'traefik.http.routers.hedgedoc.rule=Host(`docs.nyx.thepatrick.cloud`)'
       - 'traefik.http.routers.hedgedoc.entrypoints=websecure'
       - 'traefik.http.routers.hedgedoc.tls=true'
       - 'traefik.http.routers.hedgedoc.tls.certresolver=route53'
