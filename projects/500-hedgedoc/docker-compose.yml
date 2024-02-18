@@ -21,7 +21,7 @@ services:
       - CMD_URL_ADDPORT=false
       - CMD_PROTOCOL_USESSL=true
       - CMD_PORT=3000
-      - CMD_ALLOW_ORIGIN=['hedgedoc.nyx.thepatrick.cloud']
+      - CMD_ALLOW_ORIGIN=['docs.nyx.thepatrick.cloud']
     volumes:
       - uploads:/hedgedoc/public/uploads
     restart: unless-stopped
