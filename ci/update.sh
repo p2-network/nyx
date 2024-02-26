@@ -14,20 +14,24 @@ PROJECTS_DIR=$( realpath "$BASE_DIR"/../projects )
 
 echo "Looking for projects in $PROJECTS_DIR"
 
-# Update all projects
-for dir in $PROJECTS_DIR/*; do
-  if [ -d "$dir" ]; then
+# function that runs a command in a project directory
+update_project() {
+  local project=$1
 
-    echo "::group::Updating $dir..."
+    echo "::group::Updating $project..."
 
-    pushd $dir
-
-    [ -f "$dir/before.sh" ] && (./before.sh)
-    [ -f "$dir/docker-compose.yml" ] && (docker compose up -d)
-
-    popd
+    [ -f "$project/before.sh" ] && (cd $project; ./before.sh)
+    [ -f "$project/docker-compose.yml" ] && (cd $project; docker compose up -d)
 
     echo "::endgroup::"
+}
 
+# Special case for traefik - we want to run it first, and renaming it now is ... difficult
+update_project $PROJECTS_DIR/traefik
+
+# Then find all the rest, but only if they start with a number
+for project in $PROJECTS_DIR/[0-9]*; do
+  if [ -d "$project" ]; then
+    update_project $project
   fi
 done
