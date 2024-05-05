@@ -1,0 +1,20 @@
+---
+- hosts: all
+  become: true
+  gather_facts: true
+
+  vars_files:
+    - config.yml
+
+  # roles:
+    # - geerlingguy.security
+
+  # TODO: Install docker etc here.
+
+  tasks:
+    - name: Update apt cache.
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Configure AWS IAM Roles Anywhere infrastructure.
+      include_tasks: tasks/aws-iam-roles-anywhere.yml

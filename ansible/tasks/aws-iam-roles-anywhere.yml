@@ -1,0 +1,45 @@
+---
+- name: Pull rolesanywhere_credential_helper from docker
+  ansible.builtin.shell: |
+    mkdir -p /opt/p2-network/rolesanywhere-credential-helper/{{ rolesanywhere_credential_helper_version }}
+
+    cd /opt/p2-network/rolesanywhere-credential-helper/{{ rolesanywhere_credential_helper_version }}
+
+    image_name=ghcr.io/thepatrick/rolesanywhere-credential-helper:{{ rolesanywhere_credential_helper_version }}
+
+    id=$(docker create $image_name)
+
+    echo "Copying file from docker container ($id, from $image_name) to local file $local_file_name"
+
+    docker cp $id:/aws_signing_helper - > aws_signing_helper.tar
+    docker rm -v $id
+
+    tar xf aws_signing_helper.tar
+
+    rm aws_signing_helper.tar
+  args:
+    creates: /opt/p2-network/rolesanywhere-credential-helper/{{ rolesanywhere_credential_helper_version }}/aws_signing_helper
+
+  # TODO: remove all other entries in /opt/p2-network/rolesanywhere-credential-helper/
+
+- name: Add the user 'aws-signing-helper'
+  ansible.builtin.user:
+    name: aws-signing-helper
+    shell: /bin/bash
+    # groups: admins,developers
+    # append: yes
+
+- name: Create systemd unit for aws-signing-helper
+  ansible.builtin.template:
+    src: templates/aws-signing-helper.service.j2
+    dest: /etc/systemd/system/aws-signing-helper.service
+  vars:
+    binary: /opt/p2-network/rolesanywhere-credential-helper/{{ rolesanywhere_credential_helper_version }}/aws_signing_helper
+    user: aws-signing-helper
+
+- name: Start aws-signing-helper service
+  ansible.builtin.systemd_service:
+    name: aws-signing-helper
+    state: started
+    enabled: yes
+    daemon_reload: yes

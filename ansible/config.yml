@@ -1,0 +1,5 @@
+---
+security_sudoers_passwordless:
+  - "{{ ansible_user }}"
+
+rolesanywhere_credential_helper_version: sha-d3e3a0d23d348eb81cd34ea9743432c98ff0e445

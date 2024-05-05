@@ -1,0 +1,13 @@
+[Unit]
+Description=AWS IAM Roles Anywhere Credential Helper
+Documentation=https://github.com/thepatrick/rolesanywhere-credential-helper
+After=network.target
+
+[Service]
+Type=simple
+User={{ user }}
+ExecStart={{ binary }} serve --profile-arn {{ rolesanywhere_profile_arn }} --role-arn {{ rolesanywhere_role_arn }} --trust-anchor-arn {{ rolesanywhere_trust_anchor_arn }} --certificate {{ rolesanywhere_certificate }}
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
