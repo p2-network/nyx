@@ -1,4 +1,10 @@
 ---
+- name: Create a docker network for the per-docker-roles service
+  ansible.builtin.docker_network:
+    name: per-docker-roles
+    state: present
+  register: per_docker_roles_network
+
 - name: Pull per-docker-roles from docker
   ansible.builtin.shell: |
     mkdir -p /opt/p2-network/per-docker-roles/{{ per_docker_roles_version }}
@@ -20,8 +26,6 @@
   args:
     creates: /opt/p2-network/per-docker-roles/{{ per_docker_roles_version }}/per-docker-roles
 
-    # 
-
   # TODO: remove all other entries in /opt/p2-network/per-docker-roles/
 
 - name: Add the user 'per-docker-roles'
@@ -38,6 +42,8 @@
   vars:
     binary: /opt/p2-network/per-docker-roles/{{ per_docker_roles_version }}/per-docker-roles
     user: per-docker-roles
+    # listen_address: "{{ per_docker_roles_network.network.IPAM.Config[0].Gateway }}"
+    # docker_network: "{{ per_docker_roles_network.network.Name }}"
 
 - name: Start per-docker-roles service
   ansible.builtin.systemd_service:
