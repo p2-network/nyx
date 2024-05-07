@@ -1,0 +1,13 @@
+[Unit]
+Description=Per Docker Roles Credential Helper
+Documentation=https://github.com/thepatrick/per-docker-roles
+After=network.target
+
+[Service]
+Type=simple
+User={{ user }}
+ExecStart={{ binary }} serve
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
