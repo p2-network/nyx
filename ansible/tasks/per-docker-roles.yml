@@ -42,8 +42,8 @@
   vars:
     binary: /opt/p2-network/per-docker-roles/{{ per_docker_roles_version }}/per-docker-roles
     user: per-docker-roles
-    # listen_address: "{{ per_docker_roles_network.network.IPAM.Config[0].Gateway }}"
-    # docker_network: "{{ per_docker_roles_network.network.Name }}"
+    listen_on: "{{ per_docker_roles_network.network.IPAM.Config[0].Gateway }}"
+    docker_network: "{{ per_docker_roles_network.network.Name }}"
 
 - name: Start per-docker-roles service
   ansible.builtin.systemd_service:

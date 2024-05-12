@@ -6,7 +6,7 @@ After=network.target
 [Service]
 Type=simple
 User={{ user }}
-ExecStart={{ binary }} serve
+ExecStart={{ binary }} serve --listen-on {{ listen_on }} --docker-network {{ docker_network }}
 Restart=on-failure
 
 [Install]
