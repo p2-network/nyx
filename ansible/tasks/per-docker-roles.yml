@@ -44,6 +44,7 @@
     user: per-docker-roles
     listen_on: "{{ per_docker_roles_network.network.IPAM.Config[0].Gateway }}"
     docker_network: "{{ per_docker_roles_network.network.Name }}"
+  register: per_docker_roles_service
 
 - name: Start per-docker-roles service
   ansible.builtin.systemd_service:
@@ -51,3 +52,9 @@
     state: started
     enabled: yes
     daemon_reload: yes
+
+- name: Restart per-docker-roles service
+  ansible.builtin.systemd_service:
+    name: per-docker-roles
+    state: restarted
+  when: per_docker_roles_service.changed
