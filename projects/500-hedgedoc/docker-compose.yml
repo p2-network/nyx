@@ -4,7 +4,7 @@ name: hedgedoc
 
 services:
   database:
-    image: postgres:16.3-alpine
+    image: postgres:16.4-alpine
     env_file:
       - database.env
     volumes:
@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
   app:
     # the offical image is not multi-arch, so we use the linuxserver image
-    image: linuxserver/hedgedoc:1.9.9
+    image: linuxserver/hedgedoc:1.10.0
     env_file:
       - hedgedoc.env
     environment:
