@@ -3,4 +3,4 @@ security_sudoers_passwordless:
   - "{{ ansible_user }}"
 
 rolesanywhere_credential_helper_version: sha-d3e3a0d23d348eb81cd34ea9743432c98ff0e445
-per_docker_roles_version: sha-374bf64b91f7862183d77fdd6f0a007f5cc40da6
+per_docker_roles_version: sha-d6f0082601b375f0c75b2b252107e3df619f1e2b
